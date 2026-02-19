@@ -23,27 +23,30 @@ PatternManager manager(leds, NUM_LEDS);
 
 
 void setup() {
-  // put your setup code here, to run once:
+  // 5 seconds delay for making it easy to reupload code to the arduino
   delay(5000);
   
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   FastLED.setBrightness(BRIGHTNESS);
   
-  colorFadePattern.setTickMs(33);     // ~30Hz hue updates
-  colorFadePattern.setHueStep(1);     // slow drift
+
+  // Setup pattern parameters
+  colorFadePattern.setTickMs(33);
+  colorFadePattern.setHueStep(1);
   colorFadePattern.setSaturation(200);
   colorFadePattern.setValue(200);
 
-
   chase.setColor(CRGB::OrangeRed);
-  chase.setStepMs(25);                              // movement speed (ms per step)
-  chase.setDirection(Chase::Direction::FORWARD);    // or REVERSE
-  chase.setTail(6);                                 // 0 = no tail
-  chase.setBackground(CRGB::Black);                 // default
+  chase.setStepMs(25);
+  chase.setDirection(Chase::Direction::FORWARD);
+  chase.setTail(6);
+  chase.setBackground(CRGB::Black);
+
 
   manager.setPatterns(patterns, sizeof(patterns)/sizeof(patterns[0]));
-  manager.setTargetFps(120);   // cap FastLED.show()
-  manager.setRotateMs(20000);  // switch patterns every 15,000 ms
+  manager.setTargetFps(120);
+  // Set the time in milliseconds for cycling trough each pattern
+  manager.setRotateMs(20000);
 }
 
 
