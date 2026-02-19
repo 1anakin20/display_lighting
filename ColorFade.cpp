@@ -43,9 +43,6 @@ void ColorFade::enableBreathing(bool enable, uint16_t periodMs, uint8_t depth) {
   startMs_ = millis();
 }
 
-// ---------------- Internals --------------------
-// Smooth breathing curve using FastLED's beat8 + easing-like shaping.
-// Returns a scale 0..255 (0 darkest, 255 brightest)
 uint8_t ColorFade::computeBreathScale_(uint32_t now) const {
   // phase goes 0..255 over the period; beat8 handles wrap neatly
   uint8_t phase = beat8( (uint16_t)(1000UL * 256UL / breathPeriodMs_), (uint16_t)(now - startMs_) );
