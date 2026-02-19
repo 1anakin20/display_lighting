@@ -4,9 +4,6 @@
 
 /**
  * ColorFade: progressively changes the solid color over time by drifting hue.
- * - Non-blocking: uses millis()
- * - Minimal state: base hue, tick timing
- * - Optional breathing brightness modulation (off by default)
  */
 class ColorFade : public Pattern {
 public:
@@ -17,32 +14,55 @@ public:
   void update(uint32_t now) override;
 
   // ---- Configuration API ----
-  void setTickMs(uint16_t ms);       // how often to advance hue (default 20ms ≈ 50Hz)
-  void setHueStep(uint8_t step);     // hue increment per tick (default 1)
-  void setSaturation(uint8_t s);     // HSV saturation (0..255, default 255)
-  void setValue(uint8_t v);          // base brightness (0..255, default 255)
+  /**
+  Speed of changing the colors
+  @param ms time of the color in miliseconds. Default 20ms
+  */
+  void setTickMs(uint16_t ms);
 
-  // Optional "breathing" brightness modulation (smooth in/out)
+  /**
+  @param step Amount increment the hue per tick. Default 1
+  */
+  void setHueStep(uint8_t step);
+
+  /**
+  @param s Saturation. 0..255, default 255 
+  */
+  void setSaturation(uint8_t s);
+
+  /**
+  @param base brightness. 0..255, default 255
+  */
+  void setValue(uint8_t v);
+
+  /**
+  Breathing animation, smooths the in and out
+  @param enable True to enable the breathing, default is disblaed.
+  @param periodMs Duration of a cycle in miliseconds
+  @param depth 0 to 127. How bright the top of the breathing cycle is. Note 0 will not show a cycle even if enabled. 
+  */
   void enableBreathing(bool enable, uint16_t periodMs = 4000, uint8_t depth = 64);
-  // periodMs: full in+out cycle duration
-  // depth: modulation depth (0..127). 0 disables effect even if enabled.
-
+  
 private:
   // Animation state
   uint32_t lastTickMs_ = 0;
   uint8_t  hue_        = 0;
 
-  // Config
+  // Default config
   uint16_t tickMs_     = 20;   // advance roughly every 20ms
   uint8_t  hueStep_    = 1;    // add 1 to hue each tick
   uint8_t  sat_        = 255;  // saturation
   uint8_t  val_        = 255;  // base brightness
 
-  // Breathing
+  // Default breathing config
   bool     breathing_  = false;
   uint16_t breathPeriodMs_ = 4000; // 4s cycle
   uint8_t  breathDepth_    = 64;   // 0..127 (how strong the effect)
   uint32_t startMs_    = 0;        // reference time for breathing phase
 
-  uint8_t computeBreathScale_(uint32_t now) const; // returns 0..255
+  /**
+  Computes the breathing curve
+  @returns 0..255
+  */
+  uint8_t computeBreathScale_(uint32_t now) const;
 };
