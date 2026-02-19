@@ -39,11 +39,12 @@ void setup() {
   colorFadePattern.setSaturation(200);
   colorFadePattern.setValue(200);
 
-  chase.setColor(CRGB::OrangeRed);
+  chase.setColor(CRGB::Green);
   chase.setStepMs(25);
   chase.setDirection(Chase::Direction::FORWARD);
   chase.setTail(6);
   chase.setBackground(CRGB::Black);
+  chase.setHeads(12);
   
   segmentPattern.setSegments(30); // divide strip into 6 parts
   segmentPattern.setColors(CRGB::Orange, CRGB::Purple);
