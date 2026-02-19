@@ -1,6 +1,7 @@
 #include "PatternManager.h"
 #include "ColorFade.h"
 #include "Chase.h"
+#include "SegmentAlternating.h"
 
 // ---------- Hardware ----------
 #define NUM_LEDS     500
@@ -13,8 +14,10 @@ CRGB leds[NUM_LEDS];
 
 ColorFade colorFadePattern;
 Chase chase;
+SegmentAlternating segmentPattern;
 
 Pattern* patterns[] = {
+  &segmentPattern,
   &colorFadePattern,
   &chase,
 };
@@ -41,7 +44,10 @@ void setup() {
   chase.setDirection(Chase::Direction::FORWARD);
   chase.setTail(6);
   chase.setBackground(CRGB::Black);
-
+  
+  segmentPattern.setSegments(30); // divide strip into 6 parts
+  segmentPattern.setColors(CRGB::Orange, CRGB::Purple);
+  segmentPattern.setFlipInterval(2000); // flip every 700ms
 
   manager.setPatterns(patterns, sizeof(patterns)/sizeof(patterns[0]));
   manager.setTargetFps(120);
